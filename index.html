@@ -1,0 +1,536 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8">
+<title>About Zurra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa;
+  --bg-2:#ffffff;
+  --text:#111827;
+  --muted:#4b5563;
+  --glass:rgba(255,255,255,.55);
+  --border:rgba(0,0,0,.06);
+  --shadow:rgba(0,0,0,.04);
+  --brand:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);
+}
+[data-theme="dark"]{
+  --bg:#000000;
+  --bg-2:#0f0f12;
+  --text:#fafafa;
+  --muted:#a1a1aa;
+  --glass:rgba(20,20,22,.55);
+  --border:rgba(255,255,255,.12);
+  --shadow:rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
+  overflow:hidden;
+}
+/* Scrollable sections */
+.scrollable{
+  max-height:70vh;
+  overflow-y:auto;
+  padding-right:8px;
+}
+.scrollable::-webkit-scrollbar{width:4px}
+.scrollable::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+
+/* Combined toggle switch */
+.theme-music-toggle{
+  position:fixed;
+  top:24px;
+  right:24px;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:4px;
+  backdrop-filter:blur(10px);
+}
+.toggle-btn{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  transition:all .3s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+}
+.music-btn{
+  background:transparent;
+  color:var(--text);
+}
+.theme-btn{
+  background:var(--glass);
+  color:var(--text);
+  margin-left:4px;
+}
+[data-theme="dark"] .theme-btn{
+  background:var(--glass);
+}
+.bg-grad{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:var(--brand);
+  filter:blur(120px);
+  opacity:.22;
+  animation:shift 20s ease-in-out infinite;
+}
+@keyframes shift{
+  0%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(180deg) scale(1.2)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+.container{
+  width:100%;
+  max-width:420px;
+  padding:24px;
+  text-align:center;
+}
+.page{display:none;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.logo{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 12px 32px var(--shadow);
+  animation:float 6s ease-in-out infinite;
+  margin:0 auto 20px;
+}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+h1{font-size:26px;font-weight:600;margin-bottom:8px;background:var(--brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{color:var(--muted);margin-bottom:28px;font-size:15px}
+.btn,.product-btn{
+  flex:1;
+  padding:14px 28px;
+  border:none;
+  border-radius:16px;
+  font-weight:600;
+  background:var(--brand);
+  color:#fff;
+  cursor:pointer;
+  transition:transform .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.glass-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  backdrop-filter:blur(20px);
+  margin-bottom:20px;
+}
+.qr{width:100%;max-width:240px;border-radius:16px;margin-bottom:12px}
+.copy-row{display:flex;align-items:center;gap:12px;text-align:left}
+.copy-row .logo-sm{width:60px;height:60px;object-fit:contain;border-radius:14px;background:#fff}
+.copy-row .flex-col{flex:1;display:flex;flex-direction:column}
+.copy-row .title{font-weight:600;font-size:16px;line-height:1}
+.copy-row .number{font-weight:600;font-size:16px;color:var(--muted)}
+.copy-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 8px;transition:color .2s}
+.copy-btn:hover{color:var(--text)}
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translate(-50%,0) scale(0);
+  background:var(--brand);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;transition:transform .3s;
+}
+.toast.show{transform:translate(-50%,0) scale(1)}
+.top-bar{display:flex;justify-content:space-between;margin-bottom:16px}
+.bottom-bar{display:flex;gap:12px;margin-top:24px;justify-content:center;align-items:center;flex-wrap:wrap}
+.anim-btn{padding:12px 20px;border-radius:12px;border:none;background:var(--brand);color:#fff;font-size:16px;cursor:pointer;transition:transform .2s}
+.anim-btn:hover{transform:scale(1.05)}
+.footer{margin-top:40px;font-size:14px;color:var(--muted)}
+
+/* PRODUCTS IMPROVEMENTS */
+.products-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  max-height:60vh;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.products-list::-webkit-scrollbar{width:4px}
+.products-list::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+.product-item{position:relative;width:100%}
+.product-button{
+  width:100%;padding:20px;border:none;border-radius:16px;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);
+  cursor:pointer;transition:all .3s ease;backdrop-filter:blur(10px);text-align:left;
+  display:flex;flex-direction:column;gap:8px;
+}
+.product-button:hover{transform:translateY(-2px);box-shadow:0 8px 25px var(--shadow);border-color:rgba(59,130,246,.3)}
+.product-info{display:flex;justify-content:space-between;align-items:flex-start}
+.product-name{font-weight:600;font-size:16px;margin-bottom:4px}
+.product-price{font-size:14px;color:#3b82f6;font-weight:500;background:rgba(59,130,246,0.1);padding:4px 8px;border-radius:8px}
+.product-benefit{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-detail{display:none;background:var(--glass);border:1px solid var(--border);
+border-radius:16px;padding:24px;margin-top:12px;backdrop-filter:blur(20px);animation:fade .3s ease}
+.product-detail.show{display:block}
+.product-detail h3{font-size:20px;margin-bottom:12px}
+.product-detail .price{font-size:18px;color:#3b82f6;font-weight:600;margin-bottom:8px}
+.product-detail .benefit-title{font-weight:600;margin:8px 0 4px}
+.product-detail .benefit{color:var(--muted);margin-bottom:20px;line-height:1.5}
+.buy-now-btn{width:100%;padding:16px;border:none;border-radius:16px;font-weight:600;font-size:16px;
+background:var(--brand);color:#fff;cursor:pointer;transition:transform .2s}
+.buy-now-btn:hover{transform:translateY(-2px)}
+
+/* LIST PAGE IMPROVEMENTS */
+.list-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px}
+.list-card h3{color:#3b82f6;margin-bottom:12px;font-size:18px;display:flex;align-items:center;gap:8px}
+.list-card h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#3b82f6}
+.list-card ul{list-style:none;padding-left:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:8px}
+.list-card li{background:var(--bg-2);border-radius:8px;padding:8px 12px;font-size:14px;color:var(--muted);text-align:center;transition:all 0.2s ease}
+.list-card li:hover{transform:translateY(-2px);box-shadow:0 4px 12px var(--shadow);color:var(--text)}
+.list-card li:last-child{border-bottom:none}
+
+/* CONTACT PAGE */
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+.contact-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px 12px;
+  text-align:center;
+  transition:transform .2s;
+  text-decoration:none;
+}
+.contact-card:hover{transform:translateY(-3px)}
+.contact-card img{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:8px;
+}
+.contact-card span{font-size:14px;font-weight:600;color:var(--text)}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .list-card ul {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+</style>
+</head>
+<body>
+<!-- Audio -->
+<audio id="bgMusic" loop="">
+  <source src="https://cdn.jsdelivr.net/gh/NdikzDatabase/Database/Database/1756070821532-42ecvi.mpeg" type="audio/mpeg">
+</audio>
+
+<!-- Toggle Switch -->
+<div class="theme-music-toggle">
+  <button class="toggle-btn music-btn" id="musicBtn" title="Play/Pause">🎵</button>
+  <button class="toggle-btn theme-btn" id="themeBtn" title="Toggle Theme">☀️</button>
+</div>
+
+<div class="bg-grad"></div>
+<div class="container">
+  <!-- HOME -->
+  <section id="home" class="page active" aria-label="Home">
+    <div class="glass-card">
+      <img src="https://nefu.life/Jj53gf.jpg" alt="Logo Zurra" class="logo">
+      <h1>Hello, have a nice day!<br>Selamat datang di website zurra</h1>
+      <p>Payment, portfolio, dan pusat informasi ZurraKangRename.</p>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('payment')">Payment</button>
+      <button class="btn" onclick="toPage('products')">Produk</button>
+      <button class="btn" onclick="toPage('list')">MySupport</button>
+      <button class="btn" onclick="toPage('contact')">Contact</button>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section id="payment" class="page" aria-label="Payment">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <div class="scrollable">
+      <h2>QRIS Payment</h2>
+      <div style="text-align:center">
+        <img id="qris" src="https://nefu.life/VNVOlq.jpg" alt="QRIS" class="qr">
+      </div>
+      <h2>Metode Lainnya</h2>
+      <div class="glass-card">
+        <div class="copy-row">
+          <img src="https://img1.pixhost.to/images/8008/632283885_kayzennotdev.jpg" alt="DANA" class="logo-sm">
+          <div class="flex-col"><span class="title">DANA</span><span class="number">082167559541</span></div>
+          <button class="copy-btn" onclick="copyText('0882007195252')">Salin</button>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="copy-row">
+          <img src="https://img1.pixhost.to/images/8008/632284402_kayzennotdev.jpg" alt="GoPay" class="logo-sm">
+          <div class="flex-col"><span class="title">GoPay</span><span class="number">Gak Punya Bg</span></div>
+          <button class="copy-btn" onclick="copyText('0882007195252')">Salin</button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('products')">List Produk</button>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="page" aria-label="Products">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <div class="scrollable">
+      <h2>LIST PRODUK ZURRA</h2>
+      <div class="products-list" id="productsContainer"></div>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('contact')">Order Now</button>
+    </div>
+  </section>
+
+<!-- LIST PAGE -->
+<section id="list" class="page" aria-label="List">
+  <div class="top-bar">
+    <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+  </div>
+  <div class="scrollable">
+    <h2>My Support</h2>
+    
+    <!-- MODS -->
+    <div class="list-card">
+      <h3>My Support</h3>
+      <ul>
+        <li>Thanks To Allah SWT</li>
+        <li>My Ortu</li>
+        <li>My Friend</li>
+        <li>My Patner</li>
+      </ul>
+    </div>
+
+    <!-- Patner Pribadi -->
+    <div class="list-card">
+      <h3>Real PT Pribadi</h3>
+      <ul>
+        <li>Jarrs Mod</li>
+      </ul>
+    </div>
+
+    <!-- ALL PARTNER ZURRA -->
+    <div class="list-card">
+      <h3>Patner Saya</h3>
+      <ul>
+        <li>Mang Niko</li>
+        <li>Ripz</li>
+        <li>Jarrs Mod</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="bottom-bar">
+    <button class="btn" onclick="toPage('products')">Go to Join</button>
+  </div>
+</section>
+
+  <!-- CONTACT PAGE -->
+  <section id="contact" class="page" aria-label="Contact">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <h2>Contact Zurra</h2>
+    <div class="contact-grid">
+      <a class="contact-card" href="wa.me/62895402655012">
+        <img src="https://img1.pixhost.to/images/8185/634294459_coganz.jpg" alt="WhatsApp">
+        <span>WhatsApp</span>
+      </a>
+      <a class="contact-card" href="https://t.me/zurraSTR">
+        <img src="https://img1.pixhost.to/images/8185/634294799_coganz.jpg" alt="Telegram">
+        <span>Telegram</span>
+      </a>
+      <a class="contact-card" href="https://whatsapp.com/channel/0029VbAp9aF1dAw96mNlIN3E">
+        <img src="https://img1.pixhost.to/images/8185/634294459_coganz.jpg" alt="WhatsApp Channel">
+        <span>Saluran WA</span>
+      </a>
+      <a class="contact-card" href="https://youtube.com/@zurrav1?si=NCPL_6Hu4PgPeICJ">
+        <img src="https://img1.pixhost.to/images/8185/634294938_coganz.jpg" alt="YouTube">
+        <span>YouTube</span>
+      </a>
+      <a class="contact-card" href="https://www.tiktok.com/@zurranotdev">
+        <img src="https://img1.pixhost.to/images/8185/634294673_coganz.jpg" alt="TikTok">
+        <span>TikTok</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="footer">© 2025 Zurra バカ</div>
+</div>
+<div id="toast" class="toast">Copied ✅</div>
+
+<script>
+/* === Audio untuk GitHub + Vercel === */
+// Cara menambahkan lagu:
+// 1. Upload file lagu.mp3 ke folder public/ di repository GitHub Anda
+// 2. Ganti src menjadi: src="https://your-domain.vercel.app/lagu.mp3"
+// 3. Pastikan file lagu.mp3 ada di root folder public/
+const music=document.getElementById('bgMusic');
+const musicBtn=document.getElementById('musicBtn');
+const themeBtn=document.getElementById('themeBtn');
+let isPlaying=false;
+
+musicBtn.addEventListener('click',()=>{
+  if(isPlaying){
+    music.pause();
+    musicBtn.textContent='🎵';
+  }else{
+    music.play().catch(()=>{alert('Browser mencegah autoplay. Klik lagi untuk memutar musik.')});
+    musicBtn.textContent='🔇';
+  }
+  isPlaying=!isPlaying;
+});
+
+/* === Theme Toggle === */
+const root=document.documentElement;const themeKey='kayzen-theme';
+function applyTheme(t){
+  root.setAttribute('data-theme',t);
+  localStorage.setItem(themeKey,t);
+  themeBtn.textContent=t==='dark'?'🌙':'☀️';
+}
+function toggleTheme(){
+  const current=root.getAttribute('data-theme');
+  const next=current==='dark'?'light':'dark';
+  applyTheme(next);
+}
+function initTheme(){
+  const saved=localStorage.getItem(themeKey);
+  const prefers=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  applyTheme(saved||prefers);
+}
+themeBtn.addEventListener('click',toggleTheme);
+initTheme();
+
+/* === Navigation === */
+function toPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.product-detail').forEach(d=>d.classList.remove('show'));
+}
+
+/* === Copy Clipboard === */
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const toast=document.getElementById('toast');
+    toast.textContent='Nomor disalin ✅';
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),2000);
+  });
+}
+
+/* === Render Products === */
+const products = [
+  { 
+    name: "Script Bug High Vloods", 
+    price: "Rp 15.000", 
+    benefit: `Script Bug High Vloods Terbaru` 
+  },
+  { 
+  name: "Reseller Script High Vloods", 
+  price: "Rp 25.000", 
+  benefit: `
+    1. Dapat Menjual Sc High Vloods.<br>
+    2. Mendapatkan Update Script Secara Permanent.
+  ` 
+},
+{ 
+  name: "Partner Script High Vloods", 
+  price: "Rp 35.000", 
+  benefit: `
+    1. Dapat Menjual Sc High Vloods.<br>
+    2. Bisa Open Reseller Sc High Vloods.<br>
+    3. Mendapatkan Update Script Secara Permanent.<br>
+    4. Nama Masuk ke Dalam Credit Script & Web.
+  ` 
+},
+{ 
+  name: "Murid Unband Whatsapp", 
+  price: "Rp 5.000", 
+  benefit: `
+    1. Jadi Kang Unband Whatsapp.<br>
+    2. Dapet Mt Spam.<br>
+    3. Dapet Mt Perma Tinjau.<br>
+    4. Dapet Mt Perma Fresh.<br>
+    5. Dapet Mt Perma Hard.<br>
+    6. Dapet Mt All Opsi.<br>
+    7. Dapet Apk Cek Ban.<br>
+    8. Dapet Apk Cek Opsi.<br>
+    9. Dll (Coming Soon).
+  ` 
+},
+{ 
+  name: "Apk Bug WhatsApp High Vloods V.1", 
+  price: "Rp 35.000", 
+  benefit: `
+    1. Dapet Akses Permanen.<br>
+    2. Sender Udah Disediakan Staff.<br>
+    3. Tanpa Memakai Panel.<br>
+    4. Bisa Bug Mantan.<br>
+    5. Bisa Bug Guru.<br>
+    6. Bisa Bug Penipu.<br>
+    7. Bisa Bug Ripper.<br>
+    8. Bisa Open Jasa Bug.<br>
+    9. Dll (Coming Soon).
+    `
+},
+  { 
+    name: "Web Payment", 
+    price: "Rp 5.000 - 15.000", 
+    benefit: `
+      - Bebas Request Logo<br>
+      - Garansi 10 Hari
+    ` 
+  }
+];
+
+const productsContainer=document.getElementById('productsContainer');
+products.forEach((p,i)=>{
+  const productDiv=document.createElement('div');
+  productDiv.className='product-item';
+  productDiv.innerHTML=`
+    <button class="product-button" onclick="showProductDetail(${i})">
+      <div class="product-info">
+        <div><div class="product-name">${p.name}</div><div class="product-benefit">${p.benefit.replace(/<br>/g, ' ')}</div></div>
+        <div class="product-price">${p.price}</div>
+      </div>
+    </button>
+    <div class="product-detail" id="detail-${i}">
+      <h3>${p.name}</h3>
+      <div class="price">${p.price}</div>
+      <div class="benefit-title">Benefit:</div>
+      <div class="benefit">${p.benefit}</div>
+      <button class="buy-now-btn" onclick="buyNow()">Beli Sekarang</button>
+    </div>`;
+  productsContainer.appendChild(productDiv);
+});
+
+function showProductDetail(index){
+  document.querySelectorAll('.product-detail').forEach(d=>d.classList.remove('show'));
+  document.getElementById(`detail-${index}`).classList.add('show');
+}
+function buyNow(){toPage('payment');}
+</script>
+
+</body></html>
