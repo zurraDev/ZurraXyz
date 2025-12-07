@@ -1,3 +1,543 @@
-<!-- Encoded Hard by trio -->
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8">
+<title>について Zurra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f8fa;
+  --bg-2:#ffffff;
+  --text:#111827;
+  --muted:#4b5563;
+  --glass:rgba(255,255,255,.55);
+  --border:rgba(0,0,0,.06);
+  --shadow:rgba(0,0,0,.04);
+  --brand:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);
+}
+[data-theme="dark"]{
+  --bg:#000000;
+  --bg-2:#0f0f12;
+  --text:#fafafa;
+  --muted:#a1a1aa;
+  --glass:rgba(20,20,22,.55);
+  --border:rgba(255,255,255,.12);
+  --shadow:rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s;
+  overflow:hidden;
+}
+/* Scrollable sections */
+.scrollable{
+  max-height:70vh;
+  overflow-y:auto;
+  padding-right:8px;
+}
+.scrollable::-webkit-scrollbar{width:4px}
+.scrollable::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+
+/* Combined toggle switch */
+.theme-music-toggle{
+  position:fixed;
+  top:24px;
+  right:24px;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:4px;
+  backdrop-filter:blur(10px);
+}
+.toggle-btn{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  transition:all .3s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+}
+.music-btn{
+  background:transparent;
+  color:var(--text);
+}
+.theme-btn{
+  background:var(--glass);
+  color:var(--text);
+  margin-left:4px;
+}
+[data-theme="dark"] .theme-btn{
+  background:var(--glass);
+}
+.bg-grad{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:var(--brand);
+  filter:blur(120px);
+  opacity:.22;
+  animation:shift 20s ease-in-out infinite;
+}
+@keyframes shift{
+  0%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(180deg) scale(1.2)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+.container{
+  width:100%;
+  max-width:420px;
+  padding:24px;
+  text-align:center;
+}
+.page{display:none;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.logo{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 12px 32px var(--shadow);
+  animation:float 6s ease-in-out infinite;
+  margin:0 auto 20px;
+}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+h1{font-size:26px;font-weight:600;margin-bottom:8px;background:var(--brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{color:var(--muted);margin-bottom:28px;font-size:15px}
+.btn,.product-btn{
+  flex:1;
+  padding:14px 28px;
+  border:none;
+  border-radius:16px;
+  font-weight:600;
+  background:var(--brand);
+  color:#fff;
+  cursor:pointer;
+  transition:transform .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.glass-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  backdrop-filter:blur(20px);
+  margin-bottom:20px;
+}
+.qr{width:100%;max-width:240px;border-radius:16px;margin-bottom:12px}
+.copy-row{display:flex;align-items:center;gap:12px;text-align:left}
+.copy-row .logo-sm{width:60px;height:60px;object-fit:contain;border-radius:14px;background:#fff}
+.copy-row .flex-col{flex:1;display:flex;flex-direction:column}
+.copy-row .title{font-weight:600;font-size:16px;line-height:1}
+.copy-row .number{font-weight:600;font-size:16px;color:var(--muted)}
+.copy-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px 8px;transition:color .2s}
+.copy-btn:hover{color:var(--text)}
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translate(-50%,0) scale(0);
+  background:var(--brand);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;transition:transform .3s;
+}
+.toast.show{transform:translate(-50%,0) scale(1)}
+.top-bar{display:flex;justify-content:space-between;margin-bottom:16px}
+.bottom-bar{display:flex;gap:12px;margin-top:24px;justify-content:center;align-items:center;flex-wrap:wrap}
+.anim-btn{padding:12px 20px;border-radius:12px;border:none;background:var(--brand);color:#fff;font-size:16px;cursor:pointer;transition:transform .2s}
+.anim-btn:hover{transform:scale(1.05)}
+.footer{margin-top:40px;font-size:14px;color:var(--muted)}
+
+/* PRODUCTS IMPROVEMENTS */
+.products-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  max-height:60vh;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.products-list::-webkit-scrollbar{width:4px}
+.products-list::-webkit-scrollbar-thumb{background:var(--brand);border-radius:4px}
+.product-item{position:relative;width:100%}
+.product-button{
+  width:100%;padding:20px;border:none;border-radius:16px;
+  background:var(--glass);border:1px solid var(--border);color:var(--text);
+  cursor:pointer;transition:all .3s ease;backdrop-filter:blur(10px);text-align:left;
+  display:flex;flex-direction:column;gap:8px;
+}
+.product-button:hover{transform:translateY(-2px);box-shadow:0 8px 25px var(--shadow);border-color:rgba(59,130,246,.3)}
+.product-info{display:flex;justify-content:space-between;align-items:flex-start}
+.product-name{font-weight:600;font-size:16px;margin-bottom:4px}
+.product-price{font-size:14px;color:#3b82f6;font-weight:500;background:rgba(59,130,246,0.1);padding:4px 8px;border-radius:8px}
+.product-benefit{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-detail{display:none;background:var(--glass);border:1px solid var(--border);
+border-radius:16px;padding:24px;margin-top:12px;backdrop-filter:blur(20px);animation:fade .3s ease}
+.product-detail.show{display:block}
+.product-detail h3{font-size:20px;margin-bottom:12px}
+.product-detail .price{font-size:18px;color:#3b82f6;font-weight:600;margin-bottom:8px}
+.product-detail .benefit-title{font-weight:600;margin:8px 0 4px}
+.product-detail .benefit{color:var(--muted);margin-bottom:20px;line-height:1.5}
+.buy-now-btn{width:100%;padding:16px;border:none;border-radius:16px;font-weight:600;font-size:16px;
+background:var(--brand);color:#fff;cursor:pointer;transition:transform .2s}
+.buy-now-btn:hover{transform:translateY(-2px)}
+
+/* LIST PAGE IMPROVEMENTS */
+.list-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px}
+.list-card h3{color:#3b82f6;margin-bottom:12px;font-size:18px;display:flex;align-items:center;gap:8px}
+.list-card h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#3b82f6}
+.list-card ul{list-style:none;padding-left:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:8px}
+.list-card li{background:var(--bg-2);border-radius:8px;padding:8px 12px;font-size:14px;color:var(--muted);text-align:center;transition:all 0.2s ease}
+.list-card li:hover{transform:translateY(-2px);box-shadow:0 4px 12px var(--shadow);color:var(--text)}
+.list-card li:last-child{border-bottom:none}
+
+/* CONTACT PAGE */
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+.contact-card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px 12px;
+  text-align:center;
+  transition:transform .2s;
+  text-decoration:none;
+}
+.contact-card:hover{transform:translateY(-3px)}
+.contact-card img{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:8px;
+}
+.contact-card span{font-size:14px;font-weight:600;color:var(--text)}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .list-card ul {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+</style>
+</head>
+<body>
+<!-- Audio -->
+<audio id="bgMusic" loop="">
+  <source src="https://cdn.jsdelivr.net/gh/NdikzDatabase/Database/Database/1756070821532-42ecvi.mpeg" type="audio/mpeg">
+</audio>
+
+<!-- Toggle Switch -->
+<div class="theme-music-toggle">
+  <button class="toggle-btn music-btn" id="musicBtn" title="Play/Pause">🎵</button>
+  <button class="toggle-btn theme-btn" id="themeBtn" title="Toggle Theme">☀️</button>
+</div>
+
+<div class="bg-grad"></div>
+<div class="container">
+  <!-- HOME -->
+  <section id="home" class="page active" aria-label="Home">
+    <div class="glass-card">
+      <img src="https://nefu.life/bPRpe8.jpg" alt="Logo Zurra" class="logo">
+      <h1>Hello, have a nice day!<br>Selamat datang di website zurra</h1>
+      <p>Payment, portfolio, dan pusat informasi Zurra Is Here.</p>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('payment')">Payment</button>
+      <button class="btn" onclick="toPage('products')">Produk</button>
+      <button class="btn" onclick="toPage('list')">MySupport</button>
+      <button class="btn" onclick="toPage('contact')">Contact</button>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section id="payment" class="page" aria-label="Payment">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <div class="scrollable">
+      <h2>QRIS Payment</h2>
+      <div style="text-align:center">
+        <img id="qris" src="https://nefu.life/VNVOlq.jpg" alt="QRIS" class="qr">
+      </div>
+      <h2>Metode Lainnya</h2>
+      <div class="glass-card">
+        <div class="copy-row">
+          <img src="https://img1.pixhost.to/images/8008/632283885_kayzennotdev.jpg" alt="DANA" class="logo-sm">
+          <div class="flex-col"><span class="title">DANA</span><span class="number">082167559541</span></div>
+          <button class="copy-btn" onclick="copyText('082167559541')">Salin</button>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="copy-row">
+          <img src="https://img1.pixhost.to/images/8008/632284402_kayzennotdev.jpg" alt="GoPay" class="logo-sm">
+          <div class="flex-col"><span class="title">GoPay</span><span class="number">Gak Punya Bg</span></div>
+          <button class="copy-btn" onclick="copyText('0895402655012')">Salin</button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('products')">List Produk</button>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="page" aria-label="Products">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <div class="scrollable">
+      <h2>LIST PRODUK ZURRA</h2>
+      <div class="products-list" id="productsContainer"></div>
+    </div>
+    <div class="bottom-bar">
+      <button class="btn" onclick="toPage('contact')">Order Now</button>
+    </div>
+  </section>
+
+<!-- LIST PAGE -->
+<section id="list" class="page" aria-label="List">
+  <div class="top-bar">
+    <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+  </div>
+  <div class="scrollable">
+    <h2>My Support</h2>
+    
+    <!-- MODS -->
+    <div class="list-card">
+      <h3>My Support</h3>
+      <ul>
+        <li>Thanks To Allah SWT</li>
+        <li>My Ortu</li>
+        <li>My Friend</li>
+        <li>My Patner</li>
+      </ul>
+    </div>
+
+    <!-- Patner Pribadi -->
+    <div class="list-card">
+      <h3>Real PT Pribadi</h3>
+      <ul>
+        <li>Jarrs Mod</li>
+      </ul>
+    </div>
+
+    <!-- ALL PARTNER ZURRA -->
+    <div class="list-card">
+      <h3>Patner Saya</h3>
+      <ul>
+        <li>Mang Niko</li>
+        <li>Jarrs Mod</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="bottom-bar">
+    <button class="btn" onclick="toPage('products')">Go to Join</button>
+  </div>
+</section>
+
+  <!-- CONTACT PAGE -->
+  <section id="contact" class="page" aria-label="Contact">
+    <div class="top-bar">
+      <button class="anim-btn" onclick="toPage('home')">Kembali</button>
+    </div>
+    <h2>Contact Zurra</h2>
+    <div class="contact-grid">
+      <a class="contact-card" href="wa.me/62895402655012">
+        <img src="https://img1.pixhost.to/images/8185/634294459_coganz.jpg" alt="WhatsApp">
+        <span>WhatsApp</span>
+      </a>
+      <a class="contact-card" href="https://t.me/zurraSTR">
+        <img src="https://img1.pixhost.to/images/8185/634294799_coganz.jpg" alt="Telegram">
+        <span>Telegram</span>
+      </a>
+      <a class="contact-card" href="https://whatsapp.com/channel/0029VbAp9aF1dAw96mNlIN3E">
+        <img src="https://img1.pixhost.to/images/8185/634294459_coganz.jpg" alt="WhatsApp Channel">
+        <span>Saluran WA</span>
+      <a class="contact-card" href="https://whatsapp.com/channel/0029Vb5vMIVJ3jv5bsA7f910">
+        <img src="https://img1.pixhost.to/images/8185/634294459_coganz.jpg" alt="WhatsApp Channel">
+        <span>Info joki kontak zurra</span>
+      <a class="contact-card" href="https://chat.whatsapp.com/IAkbVoPVB3rGbp0Oucs1Q1?mode=hqrt2">
+        <img src="https://nefu.life/gSVxQJ.jpg" alt="WhatsApp Grub">
+        <span>Warung joki Kontak Zurra¹</span>
+      </a>
+      <a class="contact-card" href="hhttps://chat.whatsapp.com/B8vfvgLt6yh7TNvqECFB2a?mode=hqrt2">
+        <img src="https://nefu.life/xfsr6U.jpg" alt="WhatsApp Grub">
+        <span>Warung joki Kontak Zurra²</span>
+      <a class="contact-card" href="https://youtube.com/@zurrav1?si=NCPL_6Hu4PgPeICJ">
+        <img src="https://img1.pixhost.to/images/8185/634294938_coganz.jpg" alt="YouTube">
+        <span>YouTube</span>
+      </a>
+      <a class="contact-card" href="https://www.tiktok.com/@zurranotdev">
+        <img src="https://img1.pixhost.to/images/8185/634294673_coganz.jpg" alt="TikTok">
+        <span>TikTok</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="footer">© 2025 Zurra バカ</div>
+</div>
+<div id="toast" class="toast">Copied ✅</div>
+
 <script>
-let OLxFQN = ["VUVOR1JWUXdUbFZYVmtKR1NVZG9NR0pYZHl0UVIyZ3dZbGQzWjJKSFJuVmFl","akJwWVZkUmFWQnFlRzlhVjBaclVHZHZPR0pYVmpCWlUwSnFZVWRHZVdNeVZq","QlFVMHBXVmtWWmRFOURTU3REYW5nd1lWaFNjMXBVTjJwbllYWnFaMkZVYW1k","WlZHcG5ZVmxuVjI1V2VXTnRSVGhNTTFKd1pFZDRiRkJuYnpoaVYxWXdXVk5D","ZFZsWE1XeFFVMG95WVZkV00yTkhPWGxrUTBsbldUSTVkV1JIVm5Wa1JEQnBa","REpzYTJSSFp6bGFSMVl5WVZkT2JFeFlaSEJhU0ZKdlRFTkNjR0p0YkRCaFYw","WnpURmhPYWxsWGVHeFFWRVZwVUdkdk9HSkhiSFZoZVVKNVdsZDNPVWx1UW5s","YVYwNTJZbTAxYkZrelVXbEpSMmg1V2xkWk9VbHRhREJrU0VKNlQyazRkbHB0","T1hWa1NFMTFXakk1ZGxveWVHeFpXRUp3WTNrMWFtSXlNR2xRWjI4NFlrZHNk","V0Y1UW5sYVYzYzVTVzVDZVZwWFRuWmliVFZzV1ROUmFVbEhhSGxhVjFrNVNX","MW9NR1JJUW5wUGFUaDJXbTA1ZFdSSVRYVmFNMDR3V1ZoU2NGbDVOV3BpTWpC","cFNVZE9lV0l6VG5waU0wcHdXakpzZFZCVFNXbFFaMjg0WWtkc2RXRjVRbTlq","YlZadFVGTktiMlJJVW5kamVtOTJUREphZG1KdVVucE1iV1IyWWpKa2MxcFhS","bmRoV0UxMVdUSTVkRXd5VG5wamVra3ZXbTFHZEdGWGVEVlFWV3gxWkVkV2VV","OXVaRzVoU0ZKQlRrUkJkMDk2VlhkTlJITXlUVVJCYlZsWE1YZFBNbEp3WXpO","Q2MxbFlhemxqTTJSb1kwTkpaMk50Vm5OUVUwcDZaRWhzYzFwWVRtOWFWMVl3","U1dvMFMxQklUakJsVjNoc1VHZHZObU50T1haa1NITkxTVU5CZEV4WFNtNVBh","VTV0VGpKWk5GcHRSVGREYVVGblRGTXhhVnA1TUhsUGFVNXRXbTFhYlZwdFdU","ZERhVUZuVEZNeE1GcFlhREJQYVUxNFRWUkZORTFxWXpkRGFVRm5URk14ZEdS","WVVteGFSRzlxVGtkSk1VNVVXWHBQZDI5blNVTXdkRm95ZUdoak0wMDJZMjFr","YVZsVFozbE9WRlZ6VFdwVk1VeEVTVEZPVTNkMVRsUlZjRTkzYjJkSlF6QjBX","VzA1ZVZwSFZubFBia3B1V1cxRmIwMURkM2RNUkVGelRHcEJNa3RVYzB0SlEw","RjBURmhPYjFsWFVuWmtlbkI1V2pKS2FFdEVRWE5OUTNkM1RFTTBkMDVEYXpk","RGFVRm5URk14YVdOdFJuVmFSSEJ6WVZjMWJGbFlTWFJhTTBwb1drZHNiR0p1","VVc5TlZFMHhXa2RXYmt4RFRYcFphbWQ1V21wWmMwbDZhR2xPVjA1dFRtbDNh","azFFV21sT2JWRXdTMVJ6UzJaUmNHSmFSMFl3V1ZNeE1HRkhWblJhVkRCcFdr","ZEdlV0Y1U21SbGQyOW5TVU13ZEZsdFl6Wkpla0YzVFVSQmQwMUVjMHRKUTBG","MFRGZEtia3hVU1RaSmVrSnRUVWRaZUUxcWMwdEpRMEYwVEZoU2JHVklVVFpK","TWxwb1dtMUdiVmxVYzB0SlEwRjBURmN4TVdSSFZtdFBhVTVvVFZkRmVGbFhS","VGREYVVGblRGTXhibUpIUm5wamVuQjVXakpLYUV0RVNYZE1SRWwzVEVSSmVV","eEROREZPVTJzM1EybEJaMHhUTVdsaU0wcHJXbGhKTm1OdFpHbFpVMmQ1VGxS","VmMwMXFWVEZNUkVreFRsTjNkVTFVU1hCUGQyOW5TVU13ZEdNeWFHaGFSemt6","VDI1S2JsbHRSVzlOUTNkM1RFUkJjMHhxU1RGTFZITkxabEZ2Y1dVeVNuWmxR","ekY2WVZod2NHSnRZelpaYlRsNVdrZFdlVXhYU25abFJIUjBXVmhLYm1GWE5E","Wk5SSFIzV1ZkU2EyRlhOVzVQYWtFM1dtMDVkV1JETVcxWlZ6RndZa2hyTmxO","WE5UQmFXRWx6WXpOc2VtUkhWblJNV0Zad1RFTXhhR05JUW5OYVV6RjZaVmhP","TUZwWE1ITlJiWGh3WW0xMFRsbFhUbFJsV0U0d1dsY3hSMkl5TlRCTVEwcFVX","bGRrZGxwVFFsWlRVMGx6VlcwNWFXSXpVblpNUlVaNVlWZEdjMHhJVG1oaWJr","MTBZekpXZVdGWFdqbERiVXAyV2toc04wTnBRV2RpVjJ4MVRGZG9iR0ZYWkc5","a1JHOTRUVVJDTW1GRWMwdEpRMEpyWVZoT2QySkhSalZQYlZweldsaG5OME5w","UVdkWlYzaHdXakkwZEdGWVVteGlXRTAyV1RKV2RXUkhWbmxQZDI5blNVZHdN","V016VW5CYWJtdDBXVEk1ZFdSSFZuVmtSSEJxV2xjMU1GcFlTVGREYVVGbldX","MUdhbUV5WkhsaU0xWjFXa1J3TWxsWVNXOU1VekZwV25sck4wTnBRV2RaTWps","ellqTkpObVJ0Um5sTFF6QjBaRWRXTkdSRGF6ZERhVUZuWkVoS2FHSnVUbkJr","UjJ4MlltcHZkVTB6VFRkRGFVRm5Zak5hYkdOdFduTmlNMk0yWVVkc2ExcEhW","blZQZDNBNVEyazRjVWxHVG1wamJUbHpZa2RHYVdKSFZXZGpNbFpxWkVkc2Rt","SnVUV2RMYVRoTFRHNU9hbU50T1hOaVIwWnBZa2RXTjBOcFFXZGlWMFkwVEZk","b2JHRlhaRzlrUkc4elRVaGFiMDkzYjJkSlJ6a3lXbGhLYldKSE9UTk1XR3My","V1ZoV01HSjZjMHRKUTBKM1dWZFNhMkZYTlc1TVdFcHdXakpvTUU5cWFIZGxS","SE5MWmxGdmRXTXlUbmxpTW5oeldWZEtjMXBVYnpaTVdHUnNXVzEwY0dSRE1Y","cFpNMHAyWWtkNGFWbFlTamRrTW14clpFZG5OazVJUWpSbVVXOTFZekpPZVdJ","eWVITlpWMHB6V2xSdk5reFlaR3haYlhSd1pFTXhlbGt6U25aaVIzaHBXVmhK","ZEdSSGFERmlWMG8zV1cxR2FtRXlaSGxpTTFaMVdrUndNbGxZU1c5TVV6RnBZ","MjFHZFZwRGF6ZFpiVGw1V2tkV2VVeFlTbWhhUjJ3eFkzcHZNR05JYURsRFoy","OTJTMmxDUkdJeU1XbGhWelZzV2tOQ01HSXlaRzVpUjFWbll6TmtjR1JIVG05","SlEyOTJRMmsxTUdGSFZuUmFVekYwWkZoT2NGbDVNVEJpTW1SdVlrZFdOME5w","UVdkalJ6bDZZVmhTY0dJeU5EWmFiV3cwV2xkUk4wTnBRV2RrUnpsM1QycEpN","R05JWnpkRGFVRm5ZMjFzYm1GSVVUWk5hbEozWlVSelMwbERRalpNVjJ4MVdr","ZFdORTlxUlhkTlJFRTNRMmxCWjFwSGJIcGpSM2hvWlZSd2JXSkhWalJQZDI5","blNVZEdjMkZYWkhWTVYyd3dXbGN4ZWs5dFRteGlibEpzWTJwelMwbERRbWxa","VjA1eVdqTktkbVJYTld0UGJscG9ZMmxuZEV4WFpITlpXRTU2UzFSelMwbERR","bWxpTTBwcldsaEpOazFZUWpSSlNFNTJZa2RzYTBsSVdtaGphV2QwVEZkS2Rt","TnRVbXhqYVdzM1EybEJaMWx0T1hsYVIxWjVURmhLYUZwSGJERmplbTk2VFVo","Q05FOTNiMmRKU0VKb1drZFNjR0p0WXpaT1NFSTBUM2R2WjBsSFNtaFpNblJy","WTIwNWQweFhXbkJpU0ZKc1kycHdhV0pJVm5sTFJFVjNZMGhuY0U5M2NEbERh","VFV3WWpKa2JtSkhWWFJaYmxKMVpYZHZaMGxJWkhCYVNGSnZUMnBSZDJOSVp6","ZERhVUZuWVVkV2NGb3lhREJQYWxGM1kwaG5OME5wUVdkWmJUbDVXa2RXZVU5","dE5YWmliVlUzUTJsQloxbHRPWGxhUjFaNVRGaEthRnBIYkRGamVtOHhUVU5W","TjBOcFFXZFpNMVo1WXpJNWVVOXVRblpoVnpVd1dsaEpOME5wUVdka1NFcG9Z","bTVPY0dSSGJIWmlhbkJvWWtkM1oweHFUbnBKUjFab1l6SlZOME5wUVdkYVIy","eDZZMGQ0YUdWVWNHMWlSMVkwVDNkdlowbEhSbk5oVjJSMVRGZHNNRnBYTVhw","UGJVNXNZbTVTYkdOcWMwdEpRMEp4WkZoT01HRlhXalZNVjA1MlltNVNiR0p1","VVRaWk1sWjFaRWRXZVU5M2IyZEpSMXAyWW01UmRHTXliRFphVkc5NFRtNUNO","RTkzY0RsRGFUVjBaRmhPY0ZsNU1XbGtSelUzUTJsQloxbHRSbXBoTW1SNVlq","TldkVnBFY0RCamJVWjFZek5DYUdOdFZuVmtSSE5MU1VOQ2FtSXllSFpqYW5B","eVdWaEpiMHhUTVRCYVdHZ3dTMVJ6UzJaUmIzVmtSMmhzWWxkVmRGbHVVblZs","ZDI5blNVZEthRmt5ZEc1amJUa3hZbTFSTm1SdFJubExRekIwV2pKNGFHTXpU","WEJQZDI5blNVZE9kbUpIT1hsUGJscG9ZMmxuZEV4WVVteGxTRkZ3VDNkdlow","bEhNV2hqYldSd1lta3hjMXBYV2pCUGFsSjNaVVJ6UzJaUmNHSmFSMFl3V1ZN","eE1HRkhWblJhVkRCcFdrZEdlV0Y1U21SSlF6VXdZVWRXZEZwVE1XbGtSelUz","UTJsQloxbHRSbXBoTW1SNVlqTldkVnBFY0RKWldFbHZURk14Ym1KSFJucGpl","V3MzUTI0d1MweHRTbTVNVjJSNVdWZFNOME5wUVdkalJ6bDZZVmhTY0dJeU5E","WmFiV3cwV2xkUk4wTnBRV2RoVnpWNldsaFJOazFFYzB0SlEwSTJURmRzZFZw","SFZqUlBhVEI1VDNkdlowbEhTbWhaTW5SdVkyMDVNV0p0VVRaa2JVWjVTME13","ZEZsdVNtaGliVkZ3VDNkdlowbEhXbkJpU0ZKc1kycHdhV0pJVm5sTFJFVjVU","VWhDTkV0VWMwdEpRMEoyWTBkR2FtRllValZQYVRSNVRXcHpTMGxEUW1oaWJX","eDBXVmhTY0dJeU5EWmpNbWh3V201UlowMXFRbnBKUjFab1l6SlZkR0ZYTkhS","aU0xWXdTVWRzZFZwdGJIVmhXRkpzVDNkd09VTnJRbkphV0d4dFkyMUdkRnBZ","VFdkak1taHdXbTVTTjBOcFFXZE5RMVkzWkVoS2FHSnVUbTFpTTBwMFQyNUtk","bVJIUmpCYVUyZDNXa2RXYmt0VFFucFpNa1p6V2xObmVFdFlNRXRKUTBFeFRV","TldOMlJJU21oaWJrNXRZak5LZEU5dVNuWmtSMFl3V2xObmVFOUVRbXRhVjJO","d1NVaE9hbGxYZUd4TFJFVjFUV2xzT1VOcFFXZE5WRUYzU2xoME1HTnRSblZq","TWxwMlkyMHdObU50T1RCWldGSnNTMFJOTWsxSFVteGFlV3RuWXpKT2FHSkhW","VzlOVTJ3NVEyNHdTMHh0VG5aaWJsSm9ZVmMxYkdOdWMwdEpRMEl6WVZkU01H","RkViM2hOUkVGc1QzZHZaMGxITVdobFF6RXpZVmRTTUdGRWJ6Qk5ha0ozWlVS","elMwbERRbmRaVjFKcllWYzFiazlxU1RCalNHYzNRMmxCWjJSSFZqUmtRekZv","WWtkc2JtSnFjR3BhVnpVd1dsaEpOME51TUV0TWJrSm9XakpXTjFwSGJIcGpS","M2hvWlZSd2RXSXlOV3hQTWtaMVlWY3hhR1JIYkhaaWFuQnRXVmRTYkVsRE5E","QmplVUpzV1ZoT2JHWlJiM1ZqUjBadVdsTTFhRmt6VW5Ca2JWWTNXa2RzZW1O","SGVHaGxWSEJwWWtjNWFtRXpNRXRSUjNSc1pWZGFlVmxYTVd4amVVSnRXVmRT","YkdVeVdubGlNakUzWWpOQ2FGa3liREJsVkc5M1R6TlNlVmxYTlhwYWJUbDVZ","bFJ3TUdOdFJuVmpNbmhvWkVkV1drdEVSWGxqU0dkd1psaFNkbVV5T1hkWlYw","NXdaRWhyTmsxVWREQmpiVVoxWXpKYWRtTnRNRFppYlRsMVdsZ3hPVU5wTlhO","aU1tUjJaWGR2WjBsSVpIQmFTRkp2VDJwRmVVMUlRalJQZDI5blNVZG9iR0ZY","Wkc5a1JHOTRUV3BDZDJWRWMwdEpRMEpwWWpOS2ExcFlTWFJqYlVacllWaFdl","azlxVlhkS1ZITkxTVU5DZGxsdGNHeFpNMUYwV20xc01FOXRUblprYlZaNVQz","ZHZaMGxIU25abFF6RjZZVWRHYTJJell6Wk5RMEY0VFc1Q05FbEVUWGxqU0dk","blpHMUdlVXRETUhSak1taG9Xa2M1TTB0VWMwdEpRMEpvWW0xc2RGbFlVbkJp","TWpRMldtMTRkbGxZVVdkT2JrMW5XbGRHZWxwVE1YQmlhVEYyWkZoUloyRlhO","VzFoVnpWd1pFZFZOME5wUVdkaVYwWjVXakpzZFU5cVFXZFpXRll3WW5sQmVV","MUlRalJQZDNBNVEydENjbHBZYkcxamJVWjBXbGhOWjFwdGVIWlpXRkkzVFVO","V04yUklTbWhpYms1dFlqTktkRTl1VW5sWlZ6VjZZa2RHTUZwV2EyOU5RMnc1","VGxSQmJHVXpVbmxaVnpWNldtMDVlV0pVY0RCamJVWjFZeko0YUdSSFZscExR","ekEwWTBobmNHWlVSWGROUTFZM1pFaEthR0p1VG0xaU0wcDBUMjVTZVZsWE5Y","cGlSMFl3V2xacmIwMURiRGxtVVhCdlRWaDBiV0l5TlRCTVdFNXdaVzFWTmsx","cVduZGxSSFJ0WWpJMU1FeFlaR3hoVjJSdlpFUnZNazFFUVRkaVYwWjVXakpz","ZFV4WFNuWmtTRkoyWWxSdk5HTklaemRaYlVacVlUSmtlV0l6Vm5WYVJIQXlX","VmhKYjB4VE1XbGpiVVoxV2tOck4weFlaR3haYlhSd1pFTXhhVmxYVG5KYU0w","cDJaRmMxYTB4WFRuTmhXRUUyWkVkV05HUkVkR2xaVjA1eVdqTktkbVJYTld0","TVYwNXpZVmhCTm1SSFZqUmtSSFJxWWpKNGRtTnFjREJqYlVaMVl6TkNhR050","Vm5Wa1NEQkxZMGgwYW1JeWVIWmphbkF5V1ZoSmIweFRNWFJrV0ZKc1drTnJO","MkpYUm5sYU1teDFURmRLZG1SSVVuWmlWRzk1VDBoQ05FOHlXblppYmxGMFl6","SnNObHBVYjNoT1dFSTBabEZ2ZFZsdVVuVk1RelYzWTIwNWEyUlhUakJNVjBv","d1ltNXpTMGxEUW0xaVIxWTBUMnBGTjBOcFFXZGpSMFpyV2tkc2RWcDZiM2hP","U0VJMFNVUkpOR05JWnpkRGFVRm5XVzA1ZVZwSFZubFBiVFYyWW0xVk4wTnBR","V2RaYlRsNVdrZFdlVXhZU21oYVIyd3hZM3B2ZUU1dVFqUlBkMjluU1VkYWRt","SnVVWFJrTWxad1dqSm9NRTlxV1hkTlJITkxTVU5DYVZsWFRuSmFNMHAyWkZj","MWEwOXVXbWhqYVdkMFRGZEtlVmxYTld0TFZITkxTVU5DYW1JeWVIWmphbTlx","V20xYWJVOTNiMmRKUjA0eFkyNU9kbU5xY0hkaU1teDFaRWRXZVU5M2IyZEpT","Rko1V1ZjMWVtRllVbkJpTWpRMlpFaEthR0p1VG0xaU0wcDBTVU0wZVdONmMw","dG1VVzkxV1c1U2RVOXRhSFprYlZaNVpUTlNlVmxYTlhwYWJUbDVZbFJ3TUdO","dFJuVmpNbmhvWkVkV1drdERNSGxqU0dkd1psRnZkVmx1VW5WUGJVWnFaRWRz","TWxwWWREQmpiVVoxWXpKYWRtTnRNRFprU0Vwb1ltNU9jMWxZVW14WFUyZDNT","MWd3UzB4dFpITlpXRTU2VEZkT2FHTnRVamREYVVGbldXMUdhbUV5WkhsaU0x","WjFXa1J3TWxsWVNXOU1VekZ1WWtkR2VtTjVhemREYVVGbldXMDVlVnBIVm5s","UGFrWjNaVU5DZW1JeWVIQmFRMEl5V1ZoSmIweFRNV2xpTTBwcldsaEpjRTkz","YjJkSlIwcDJZMjFTYkdOcE1YbFpWMUp3WkZoTk5rMXFRbmRsUkhOTFNVTkNk","MWxYVW10aFZ6VnVUMnBKTUdOSVp6ZERhVUZuV1cxR2FtRXlVbmxpTTBGMFdt","MXNjMlJIVm5sUGJVcHpaRmhKYjAxcVFuZGxRMnMzUTJsQloySlhSbmxhTW14","MVRGZEtkbVJJVW5aaVZHOTVUVWhDTkU5M2NEbERhVFY0WTI1ME0yRlhVakJo","Ukc5NFRVUkJiRTh5TVdobFF6RXpZVmRTTUdGRWIzbE9SRUozWlVSMGFXSXpT","bXRhV0VsMFkyMUdhMkZZVm5wUGFrVXlZMGhuTjJKWFJubGFNbXgxVEZkS2Rt","UklVblppVkc5NFRXNUNOR1pSYjNWWk1qbDNaVk14ZVdJelpEZGFSMng2WTBk","NGFHVlVjRzFpUjFZMFR6SkdjMkZYWkhWTVYyd3dXbGN4ZWs5dFRteGlibEpz","WTJwMGJsbFlRVFpOVkVwM1pVUjBNRnBZYURCTVYwWnpZVmRrZFU5dGVHeGFi","bEk1UTJrMWFtSXpRalZNV0VwMlpIbEJkV0pIT1c1aWVURjZZbGgwTTJGWFVq","QmhSRzh5VFVoQ05FOHlhR3hoVjJSdlpFUnZNazFJUWpSUE1qbHBZVzFXYW1S","RE1XMWhXRkUyV1RJNWRXUkhSbkJpYW5ScFlqTkthMXBZU1hSamJVWnJZVmhX","ZWs5cVJUQmpTR2MzV1cxR2FtRXlaSGxpTTFaMVdrUnZhbHB0V20xbVVXOTFX","VEk1ZDJWVE1YbGlNMk5uVEcxYWMxcFlaM1JaTWpselpUSmFjMXBZWnpaTlZI","UnJZVmhPZDJKSFJqVlBiVnB6V2xobk4xcHRlR3hsUXpGcllWaEtiRmt6VW5C","aU1qUTJXVEk1YzJSWE1YVm1VVzkxV1RJNWQyVlRNWGxpTTJOblRHNVNjR1JI","ZUd4bE1scDJZbTVSZEdReVZuQmFNbWd3VDJwWmQwMUVkRzFpTWpVd1RGaE9j","R1Z0VlRaTlZGcDNaVVIwYzJGWE5XeE1WMmhzWVZka2IyUkViM2htVVc5MVdU","STVkMlZUTVhsaU0yTm5URzAxTVdKWFNteGpiblJ0WWpJMU1FeFlaR3hoVjJS","dlpFUnZNazFFUVRkYWJUbDFaRU14ZW1GWWNHeFBha1V5WTBobk4xa3lPWE5p","TTBrMlpHMUdlVXRETUhSaVdGWXdXbGRSY0daUmIzVlpNamwzWlZNeGFXUkhO","VGRaYlVacVlUSmtlV0l6Vm5WYVJIQXdZMjFHZFdNelFtaGpiVloxWkVSMGFX","SXpTbXRhV0VrMlltMDVkVnBVZEdwaU1uaDJZMnB3TWxsWVNXOU1VekYwWkZo","U2JGcERhemRaTTFaNVl6STVlVTl1UW5aaFZ6VXdXbGhKTjJOSFJtdGFSMngx","V25wdk1HTklaMmRQU0VJMFR6TlNlVmxYTlhwaFdGSndZakkwTmxreU9YTmlN","MGxuVEdwS2VtWlJiM1ZaTWpsM1pWTXhhV1JITkRaaFJ6a3lXbGhLTjFreU9Y","TmlNMGsyWkcxR2VVdERNSFJrUjFZMFpFTnNPVU5wTlRCaU1rWjZaRWh6UzBs","RFFuZGlNMDV3WkVkc2RtSnFjRzFoV0doc1drUjBhV0l6VWpCaU1qQTJUV3BT","ZDJWRWRITmFWMW93VDJwVmQwcFVkREJqYlVaMVl6SmFkbU50TURaa1NFcG9Z","bTVPYzFsWVVteExRekF4VFVOVmMwMURhMmRqTWs1b1lrZFZiMDFEYXpkRGFV","Rm5XVzFHYW1FeVpIbGlNMVoxV2tSd01sbFlTVzlNVXpGcFkyMUdkVnBEYXpk","Wk1qbHpZak5KTmtreVdtMWFhblIzV1ZkU2EyRlhOVzVQYWtWNVkwaG5aMDFx","UW5kbFJIUnBZak5LYTFwWVNYUmpiVVpyWVZoV2VrOXFSWGxqU0djM1dtMDVk","V1JETVhwaFdIQnNUMnBGTUdOSVp6ZGtTRXBvWW01T2NHUkhiSFppYW5Bd1ky","MUdkV015V25aamJUQm5UR3BPZWs5M2NEbERhVFV3WWpKR2VtUkROWHBoUnpr","elpUTlNlVmxYTlhwYWJUbDVZbFJ3TUdOdFJuVmpNbmhvWkVkVmIweFVWWGRL","VTNkM1MxTkNlbGt5Um5OYVUyZDRTMWd3UzB4dVVuWmpRekZwV1ZoS04xcEhi","SHBqUjNob1pWUndiV0pIVmpSUE1uQXhZek5TY0ZwdWEzUlpNamwxWkVkV2RX","UkVjSHBqUjBacVdsTXhhVnBZVWpOYVYxWjFUekl4YUdOdFpIQmlhVEZwWWpO","U01HSXlNRFpOVkZwM1pVZ3dTMHh0U25aa1NGSjJZbE14YVZsWVNqZGFSMng2","WTBkNGFHVlVjRzFpUjFZMFR6SmthR05FYjNoTmJrSTBUekl4YUdOdFpIQmlh","VEV3WWpOQk5rMXFVbmRsUkhSeFpGaE9NR0ZYV2pWTVYwNTJZbTVTYkdKdVVU","WlpNbFoxWkVkV2VVOHlSbk5oVjJSMVRGZHNNRnBYTVhwUGJVNXNZbTVTYkdO","cWRHMWlSMVkwVEZoa2VWbFlRVFprTTBwb1kwZ3dTMHh0Um5WaFZ6QjBXVzVT","ZFdVelFtaGFSMUp3WW0xak5rMVVTbmRsUTBGNVRVaENORTh5U25aamJWSnNZ","Mmt4ZVZsWFVuQmtXRTAyVFZSS2QyVkVkR2xpTTBwcldsaEpObUp0T1hWYVZI","UnBXVmRPY2xvelNuWmtWelZyVDI1YWFHTnBaM1JNVjBwNVdWYzFhMHRVZEdw","aU1uaDJZMnB2YWxwdFdtMVBNbHAyWW01UmRHTXliRFphVkc5NFRtNUNORTh5","VGpGamJrNTJZMnB3ZDJJeWJIVmtSMVo1VHpOU2VWbFhOWHBoV0ZKd1lqSTBO","bVJJU21oaWJrNXRZak5LZEVsRE5IbGpNekJMVEcxR2RXRlhNSFJaYmxKMVQy","MW9kbVJ0Vm5sbE0xSjVXVmMxZWxwdE9YbGlWSEI2V1RKR2MxcFRaM2hNYWtF","eFMxZ3dTMHh0V25aaU0xSnNZMjUwZEZsWVNtNWhWelIwWkVjNWQwOXFVWGRq","U0djM1dtMDVkV1JETVhwaFdIQnNUMnBGTUdOSVp6ZFpNamx6WWpOSk5tUnRS","bmxMUXpCMFlsaFdNRnBYVVhCbVVXOUxUSGx2WjFWR1NsQlNSbFpFVmtaTlox","TlZNVkZWYXpsWFVsVXhSbFJzVWxSSlEyOTJRMmsxZDJOdE9XdGtWMDR3WTNr","eGMyRllUakJsZDI5blNVZFNjR016UW5OWldHczJXbTE0YkdWRWMwdEpRMEp0","WWtkV05FeFhVbkJqYlZacVpFZHNkbUpxY0dwaU1uZ3hZbGMwTjBOcFFXZGFN","a1ozVDJwRk1tTklaemREYVVGbllsZEdORXhYYUd4aFYyUnZaRVJ2TWsxSVdt","OVBkMjluU1VjNU1scFlTbTFpUnprelRGaHJObGxZVmpCaWVuTkxTVU5DZDFs","WFVtdGhWelZ1VEZoS2NGb3lhREJQYWxKM1pVUnpTMlpSYjNWalNFcDJXa2hX","YW1SSVRYUmlSMng2WkVSdk5reFlaR3haYlhSd1pFTXhlbGt6U25aaVIzaHBX","VmhLTjJReWJHdGtSMmMyVGtoQ05HWlJiM1ZqU0VwMldraFdhbVJJVFhSaVIy","eDZaRVJ2Tmt4WVpHeFpiWFJ3WkVNeGVsa3pTblppUjNocFdWaEpkR1JIYURG","aVYwbzNXVzFHYW1FeVpIbGlNMVoxV2tSd01sbFlTVzlNVXpGcFkyMUdkVnBE","YXpkWmJUbDVXa2RXZVV4WVNtaGFSMnd4WTNwdk1HTklhRGxEYVRWM1kyMDVh","MlJYVGpCTVYyd3dXbGN4TjJOSE9YcGhXRkp3WWpJME5tTnRWbk5aV0ZKd1pH","MVZOMlF5Ykd0a1IyYzJUVlJCZDBwWU1FdE1ia0o1WWpKU01Wa3pVWFJaYmxZ","d1pFYzVkV1YzYjJkSlNHUndXa2hTYjA5cVJYZE5RMVUzWTBkR2ExcEhiSFZh","ZW05NVRVaENORTh5U25aamJWSnNZMnB3ZFdJeU5XeFBNa3AyWTIxU2JHTnBN","WGxaVjFKd1pGaE5OazFVV25kbFJITkxTVU5DYVZsWFRuSmFNMHAyWkZjMWEw","OXVXbWhqYVdkMFRGZGtjMWxZVG5wTFZIUnBZak5LYTFwWVNUWk5XRUkwU1Vo","T2RtSkhiR3RKU0Zwb1kybG5kRXhYU25aamJWSnNZMmxyTjFreU9YTmlNMGsy","WkcxR2VVdERNSFJrUjFZMFpFTnJOME5wUVdkWk0xWjVZekk1ZVU5dVFuWmhW","elV3V2xoSk4yUklTbWhpYms1d1pFZHNkbUpxY0doaVIzZG5UR3BPZWtsSFZt","aGpNbFUzV1cxR2FtRXlVbmxpTTBGMFdtMXNjMlJIVm5sUGJVcHpaRmhKYjAx","VVFuZGxRMnMzWkVkV05HUkRNV2hpUjJ4dVltcHdjMXBYV2pCUGQyOW5TVWRT","Y0dNelFuTlpXR3MyV20xNGJHVkVkRzFpUjFZMFRGZFNjR050Vm1wa1IyeDJZ","bXB3YW1JeWVERmlWelEzV2pKR2QwOXFhSGRsUkhOTFpsRnZkV05JU25aYVNG","WnFaRU14YVdSWVVqQmlNalEyWVVjNU1scFlTamRrU0Vwb1ltNU9iV0l6U25S","UGJsSjVXVmMxZW1KSFJqQmFWbXR2VEZSS2QyVkRhemRaYlRrMFRGaE9iMWxY","VW5aa2VtOTNTVVJvZDJWRFFYbE9XRUkwU1VoYWFHTnBaM1JNV0U1dldWZFNk","bVI1YXpkWmJUbDVXa2RXZVV4WFRuWmlSemw1VDI1S2JsbHRSVzlPVkd0elRW","Uk5kMHhFU1RCT2FYZDFUWGxzT1VOcE5YZGpiVGxyWkZkT01FeFhiSFZhYlRr","M1drZHNlbU5IZUdobFZIQnRZa2RXTkU4eWNERmpNMUp3V201cmRGa3lPWFZr","UjFaMVpFUndlbU5IUm1wYVV6RnBXbGhTTTFwWFZuVlBNa1p6WVZka2RVeFhi","REJhVnpGNlQyMWFjMXBZWjNSak0xSm9ZMjVTT1VOcE5YZGpiVGxyWkZkT01F","eFhOV2hpVjFZM1dtMDVkV1JETVROYVYyeHVZVWhSTms1cVFYZFBNbHAyWW01","UmRHTXliRFphVkc5NFRtNUNORTh5TVdoamJXUndZbWt4YVdJelVqQmlNakEy","VGtoQ05HWlJiM1ZqU0VwMldraFdhbVJETVhkamJXeHFXbGgwYldJeU5UQk1X","RTV3WlcxVk5rMVVVbmRsUkhScVlqSjRkbU5xYjJwTk1razBUVzFaTWs4eVdu","WmlibEYwWkRKV2NGb3lhREJQYWxWM1RVUjBhVmxYVG5KYU0wcDJaRmMxYTA5","dVNtNVpiVVZ2VGxScmMwMVVUWGRNUkVrd1RtbDNkMHhxUlhCUE0wSm9Xa2RT","Y0dKdFl6Wk9TRUkwU1VSb2QyVkVkR2xpTTBwcldsaEpkR050Um10aFdGWjZU","MnBvZDJWSU1FdE1ia0o1WWpKU01Wa3pVWFJaYlZaMVdsZGFjR1JJZEcxaU1q","VXdURmhPY0dWdFZUWk5WRTUzWlVSMGFtSXllSFpqYW5BeVdWaEpiMHhUTVhS","a1dGSnNXa05yTjJKWFJubGFNbXgxVEZoU2RtTkViekJqU0djM1lrZHNkVnBU","TVc5YVYyeHVZVWhSTmsxVE5EQlBNbEp3WXpOQ2MxbFlhelpNV0dSc1dXMTBj","R1JETVdsaU0yYzNURmhrYkZsdGRIQmtRekZ6WVZjMWJFeFhUbk5aVnpGM1Qy","cEpOMHhZWkd4WmJYUndaRU14YVdJelozUmlNMHB3V2xjMU1FOXVXbXhqYmxK","d1dUSkdjMDh5T1RKYVdFcHRZa2M1TTA5dGFIQmFSMUpzWW00d1MweHVRbmxp","TWxJeFdUTlJkRnBIVmpCWlYyeHpaVEpTY0dNelFuTlpXR3MyWW0wNWRWcFVk","R2xaVjA1eVdqTktkbVJYTld0UGJscG9ZMmxuZEV4WFpITlpXRTU2UzFSMGFX","SXpTbXRhV0VrMlRWaENORWxJVG5aaVIyeHJTVWhhYUdOcFozUk1WMHAyWTIx","U2JHTnBhemREYlVwMlkyMVNiR05wTVhsWlYxSndaRmhOTmsxVVduZGxSSFIz","V1ZkU2EyRlhOVzVQYWtrd1kwaG5OMkpYUm5sYU1teDFURmhTZG1ORWIzaE5i","a0kwVHpKS2FGa3lkR3RqYlRsM1RGZGFjR0pJVW14amFuQnBZa2hXZVV0RVNY","ZGpTR2R3VHpKR2RXRlhNV2hrUjJ4MlltcHdiVmxYVW14SlF6UjZZM2xDYkZs","WVRteG1VVzkxWTBoS2RscElWbXBrUXpGcldsaFNhR0ZYZDNWak1taDJaRE4w","YTJGWVRuZGlSMFkxVDIxS2MySXlUbkptVVc5MVkwaEtkbHBJVm1wa1F6RnJX","bGhTYUdGWGQyZGhSRTQzV20wNWRXUkRNWHBoV0hCc1QycEpkMk5JWnpkaVYw","WjVXakpzZFV4WFNuWmtTRkoyWWxSdmVFMXVRalJtVVc5MVkwaEtkbHBJVm1w","a1F6RnJXbGhTYUdGWGQyZE1ia0o1WVZkT2JHVXlXblppYmxGMFl6SnNObHBV","YjNoUFNFSTBUekpPZG1KSE9YbFBhVTE2V1dwbmVWcHFXVGRhYlRsMVpFTXhN","MXBYYkc1aFNGRTJUbXBCZDA4eU1XaGpiV1J3WW1reGFXSXpVakJpTWpBMlQw","aENOR1pSYjNWalNFcDJXa2hXYW1SRE1XdGFXRkpvWVZkM1oweHRTbXhpYlZa","dFlWaFJkR1JIYkRCaVIxWTNXbTA1ZFdSRE1UTmFWMnh1WVVoUk5rNXFRWGRQ","TWpGb1kyMWtjR0pxYnpSalNHZG5UVU5CTUdOSWFEbERhVFYzWTIwNWEyUlhU","akJNVjFKc1pFZEdjR0pEUVhWWmJWWjFXbGRhY0dSSWRHcGlNbmgyWTJwd01s","bFlTVzlNVXpGMFpGaFNiRnBEYXpkaVYwWjVXakpzZFV4WFNuWmtTRkoyWWxS","dmVVMUlRalJQTW5od1ltMVZkR0ZIVm5CYU1tZ3dUMnBGZFU1WU1FdE1iVW94","WlZNeGRXSXpZM1JaYmxKMVpUTmtjRnBJVW05UGFrVjNUVU5WTjJOSFJtdGFS","MngxV25wdmVFNXVRalJQTWtwMlkyMVNiR05xY0hWaU1qVnNUekpLZG1OdFVt","eGphVEY1V1ZkU2NHUllUVFpOVkZwM1pVUjBiV0l5TlRCTVdHUnNZVmRrYjJS","RWJ6Sk5SRUUzV20wNWRXUkRNWHBoV0hCc1QycEZNbU5JWnpkRGJVcG9XVEow","Ym1OdE9URmliVkUyWkcxR2VVdERNSFJaYmtwb1ltMVJjRTh5VG5aaVJ6bDVU","MmxPYlZwdFdUZFpNMVo1WXpJNWVVOXVRblpoVnpVd1dsaEpOMlJJU21oaWJr","NXdaRWRzZG1KcWNEQmpiVVoxWXpKYWRtTnRNR2RNYWtwNlpsRnZkVmx1VmpW","TVZ6VjJaSGt4YVdSSE5EWmhSemt5V2xoS04yUklTbWhpYms1dFlqTktkRTl1","VW5sWlZ6VjZZa2RHTUZwV2EyOU1WRXAzWlVOc09VTm5iM1pMYVVKTlUxWk9W","VWxHUWtKU01GVm5VMVV4VVZWck9WZFNWVEZHVkd4U1ZFbERiM1pEYVRWellW","aE9NRXhYVG1oamJWSTNXVzFHYW1FeVpIbGlNMVoxV2tSd01sbFlTVzlNVXpG","dVlrZEdlbU41YXpkWmJUbDVXa2RXZVU5cVJuZGxRMEo2WWpKNGNGcERRakpa","V0VsdlRGTXhhV0l6U210YVdFbHdUekpLZG1OdFVteGphVEY1V1ZkU2NHUllU","VFpOYWtKM1pVUjBkMWxYVW10aFZ6VnVUMnBKZDJOSVp6ZGlWMFo1V2pKc2RV","eFhTblprU0ZKMllsUnZlRTV1UWpSbVVXOTFZa2RzZW1SRE1XcFpXRXByU1Vk","bmVtVXlUblppUnpsNVQybE5lbGxxWjNsYWFsazNZbGRHZVZveWJIVk1WMHAy","WkVoU2RtSlViM2hOYmtJMFR6SmFkbUp1VVhSak1tdzJXbFJ2ZUU5SVFqUlBN","bEp3WXpOQ2MxbFlhelphYlhoc1pVUjBhR0pIYkc1aWFURndaRWRXZEdONmNH","cGFWelV3V2xoSk4xb3lSbmRQYW1oM1pVZ3dTMHh0ZUhCak0xRjBXVEpHZVZw","RFFtOU5lbTgyV1cxV2JXSXpTbXhsTWs1MlltNVNiR0p1VVRaSmFVazNXa2Rz","ZW1OSGVHaGxWSEJ3WW0xNGNHSnRWWFJaYlhoMldUSnpOMlF5Ykd0a1IyYzJU","MGhDTkU4eWFHeGhWMlJ2WkVSdk5HTklaemRaYlRsNVdrZFdlVXhZU21oYVIy","d3hZM3B2TVUxRFZUZFpiVVpxWVRKa2VXSXpWblZhUkc5cVRUSkpORTF0V1RK","bVVXOTFZa2RzZW1SRE1XcFpXRXByU1VoV2MyVXllSEJqTTFGMFl6TlNOV0pI","VlRaaWJUbDFXbFIwZDFsWFVtdGhWelZ1VEZkNGJGcHVVVFpOUkhScllWaE9k","MkpIUmpWUGJXUjVZVmRSTjFvelNuQmFRekV3V2xjeGQySkhSakJhVXpGcVlq","SjRNV0pYTlhwUGJrcHNZMGRXYUdSRGFHaGtXRkoyVEZkYWNHSkhkM05KUnpG","d1ltMHhhR1ZEWjNoTmFrSjNaVU4zWjAxWFdubExVMnMzV2pKR2QwOXFhSGRs","U0RCTFRHMTRjR016VVhSWk1rWjVXa05DYzJGWWRHbFpWMDV5V2pOS2RtUlhO","V3RQYmxwb1kybG5kRXhYU201TVZFbHdUekpLZG1OdFVteGphVEY1V1ZkU2NH","UllUVFpQU0VJMFR6TkNhRnBIVW5CaWJXTTJUMGhDTkVsRVJYbGpTR2MzV20w","NWRXUkRNWHBoV0hCc1QycEZNR05JWnpkWk1qbHpZak5KTm1SdFJubExRekIw","WWxoV01GcFhVWEJQTTFKc1pVaFJkRmxYZUhCYU1qUTJXVEpXZFdSSFZubFBN","MUo1V1ZjMWVtRllVbkJpTWpRMldWZDRjMGxFUVhWTmJrMW5XbGRHZWxwWU1F","dE1iWGh3WXpOUmRGa3lSbmxhUTBKellWUndiMkl6V214amJuUXdZMjFHZFdN","eVduWmpiVEEyWkVoS2FHSnVUbk5aV0ZKc1YxTm5kRTF1UWpSTFZIUnBZak5u","ZEdNeWFHaGFSemt6VDJwQlowNUlRalJKUkVWNVkwaG5aMlJ0Um5sTFF6QjBZ","ekpvYUZwSE9UTkxWSFJxWWpKNGRtTnFjREpaV0VsdlRGTXhNRnBZYURCTFdE","QkxURzE0Y0dNelVYUlpNa1o1V2tOQ2MyRlVjSE5aV0U0d1RGZE9iMkZYZUd0","bE1rcDJZMjFTYkdOcE1XbGlNMUl3WWpJd05tSnRPWFZhV0RCTFEyazRjVWxG","VGxCVWJGSkNVVEZSWjFWRlJraFNVMEZ4VEhkdmRWa3lPWFZrUjBacVpFTXhi","bU50Ykd0bE1sSndZek5DYzFsWWF6WmFNMHB3V2tSMGJtTnRiR3RNV0ZKc1ls","aENjMWxZVW14TVYwNTJZa2hXZEdKdVRUWmpiVlozV2xkR01FdEVTWE5OVjFw","NVMxUjBibGxZUVRaTlZGcDNaVVIwZEZsWVNtNWhWelIwWkVjNWQwOXFSVEpq","U0dnNVEyazFhbUl5TlRCWlYwNHdURmRPYUdOdFVqZERhVUZuV1cxR2FtRXla","SGxpTTFaMVdrUndNbGxZU1c5TVV6RnVZa2RHZW1ONWF6ZERhVUZuV1cwNWVW","cEhWbmxQYWtaM1pVTkNlbUl5ZUhCYVEwSXlXVmhKYjB4VE1XbGlNMHByV2xo","SmNFOTNiMmRKUjBwMlkyMVNiR05wTVhsWlYxSndaRmhOTmsxVVduZGxSSE5M","U1VOQ2QxbFhVbXRoVnpWdVQycEpkMk5JWjJkTlZFcDNaVVJ6UzBsRFFqQmFX","R2d3VEZkR2MyRlhaSFZQYlU1c1ltNVNiR05xYzB0SlEwSXdZMjFHZFdNeWJE","QmhWemwxVDI1U2VWbFhOWHBhYlRsNVlsTkJkVTF1VFRkRGFVRm5aRWRXTkdS","RE1XdGFWMDUyWTIxR01HRlhPWFZQYlRWMlltMVZOME51TUV0TWJVNTJZbTVT","YUZrelVYUlpNa1o1V2tSd2IySXpXbXhqYm5Rd1kyMUdkV015V25aamJUQTJa","RWhLYUdKdVRuTlpXRkpzVjFObmRFMHpRalJMV0RCTFRHMU9kbUp1VW1oWk0x","RjBXVEpHZVZwRFFuQmlWMlEzUTJsQloyUXliR3RrUjJjMlRrUm9kMlZFYzB0","SlEwSnZXbGRzYm1GSVVUWk9SR2gzWlVSelMwbERRbWxpTTBwcldsaEpkR050","Um10aFdGWjZUMnBWZDBwVWMwdEpRMEoyV1cxd2JGa3pVWFJhYld3d1QyMU9k","bVJ0Vm5sUGQyOW5TVWN4YUdOdFpIQmlhVEZwWWpOU01HSXlNRFpQU0VJMFQz","ZHdPVU5wTldwaU1qVXdXVmRPTUV4WFRtaGpiVkZuWXpOQ2FHSnVkRzFpTWpV","d1RGaE9jR1Z0VlRaTlZGSjNaVVIwYldJeU5UQk1XR1JzWVZka2IyUkViekpO","UkVFM1dUSTVjMkl6U1Raa2JVWjVTME13ZEdSSF
+/* === Audio untuk GitHub + Vercel === */
+// Cara menambahkan lagu:
+// 1. Upload file lagu.mp3 ke folder public/ di repository GitHub Anda
+// 2. Ganti src menjadi: src="https://your-domain.vercel.app/lagu.mp3"
+// 3. Pastikan file lagu.mp3 ada di root folder public/
+const music=document.getElementById('bgMusic');
+const musicBtn=document.getElementById('musicBtn');
+const themeBtn=document.getElementById('themeBtn');
+let isPlaying=false;
+
+musicBtn.addEventListener('click',()=>{
+  if(isPlaying){
+    music.pause();
+    musicBtn.textContent='🎵';
+  }else{
+    music.play().catch(()=>{alert('Browser mencegah autoplay. Klik lagi untuk memutar musik.')});
+    musicBtn.textContent='🔇';
+  }
+  isPlaying=!isPlaying;
+});
+
+/* === Theme Toggle === */
+const root=document.documentElement;const themeKey='kayzen-theme';
+function applyTheme(t){
+  root.setAttribute('data-theme',t);
+  localStorage.setItem(themeKey,t);
+  themeBtn.textContent=t==='dark'?'🌙':'☀️';
+}
+function toggleTheme(){
+  const current=root.getAttribute('data-theme');
+  const next=current==='dark'?'light':'dark';
+  applyTheme(next);
+}
+function initTheme(){
+  const saved=localStorage.getItem(themeKey);
+  const prefers=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  applyTheme(saved||prefers);
+}
+themeBtn.addEventListener('click',toggleTheme);
+initTheme();
+
+/* === Navigation === */
+function toPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.product-detail').forEach(d=>d.classList.remove('show'));
+}
+
+/* === Copy Clipboard === */
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const toast=document.getElementById('toast');
+    toast.textContent='Nomor disalin ✅';
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),2000);
+  });
+}
+
+/* === Render Products === */
+const products = [
+  { 
+    name: "Script Bug High Vloods", 
+    price: "Rp 15.000", 
+    benefit: `Script Bug High Vloods Terbaru` 
+  },
+  { 
+  name: "Reseller Script High Vloods", 
+  price: "Rp 35.000", 
+  benefit: `
+    1. Dapat Menjual Sc High Vloods.<br>
+    2. Mendapatkan Update Script Secara Permanent.
+  ` 
+},
+{ 
+  name: "Aplikasi Ransomware", 
+  price: "Rp 5.000 - 15.000", 
+  benefit: `
+    1. Bisa prank teman.<br>
+    2. Bisa lock screen hp orang.<br>
+    3. Bisa minta tebusan orang.<br>
+  ` 
+},
+{ 
+  name: "Murid Unband Whatsapp", 
+  price: "Rp 10.000", 
+  benefit: `
+    1. Jadi Kang Unband Whatsapp.<br>
+    2. Dapet Mt Spam.<br>
+    3. Dapet Mt Perma Tinjau.<br>
+    4. Dapet Mt Perma Fresh.<br>
+    5. Dapet Mt Perma Hard.<br>
+    6. Dapet Mt All Opsi.<br>
+    7. Dapet Apk Cek Ban.<br>
+    8. Dapet Apk Cek Opsi.<br>
+    9. Dll (Coming Soon).
+  ` 
+},
+{ 
+  name: "Apk Bug WhatsApp High Vloods V.1", 
+  price: "Rp 35.000", 
+  benefit: `
+    1. Dapet Akses Permanen.<br>
+    2. Sender Udah Disediakan Staff.<br>
+    3. Tanpa Memakai Panel.<br>
+    4. Bisa Bug Mantan.<br>
+    5. Bisa Bug Guru.<br>
+    6. Bisa Bug Penipu.<br>
+    7. Bisa Bug Ripper.<br>
+    8. Bisa Open Jasa Bug.<br>
+    9. Dll (Coming Soon).
+    `
+},
+  { 
+    name: "Web Payment", 
+    price: "Rp 5.000 - 15.000", 
+    benefit: `
+      - Bebas Request Logo<br>
+      - Garansi 10 Hari
+    ` 
+  }
+];
+
+const productsContainer=document.getElementById('productsContainer');
+products.forEach((p,i)=>{
+  const productDiv=document.createElement('div');
+  productDiv.className='product-item';
+  productDiv.innerHTML=`
+    <button class="product-button" onclick="showProductDetail(${i})">
+      <div class="product-info">
+        <div><div class="product-name">${p.name}</div><div class="product-benefit">${p.benefit.replace(/<br>/g, ' ')}</div></div>
+        <div class="product-price">${p.price}</div>
+      </div>
+    </button>
+    <div class="product-detail" id="detail-${i}">
+      <h3>${p.name}</h3>
+      <div class="price">${p.price}</div>
+      <div class="benefit-title">Benefit:</div>
+      <div class="benefit">${p.benefit}</div>
+      <button class="buy-now-btn" onclick="buyNow()">Beli Sekarang</button>
+    </div>`;
+  productsContainer.appendChild(productDiv);
+});
+
+function showProductDetail(index){
+  document.querySelectorAll('.product-detail').forEach(d=>d.classList.remove('show'));
+  document.getElementById(`detail-${index}`).classList.add('show');
+}
+function buyNow(){toPage('payment');}
+</script>
+
+</body></html>
