@@ -1,8 +1,8 @@
 // ============================================================
-//  KONFIGURASI FIREBASE
+// KONFIGURASI FIREBASE & API BACKEND - ZURRA STORE
 // ============================================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, child, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCvkTdNqm_oqC9HW3wO716stVJdUGJbJIo",
@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // ============================================================
-//  DATA DEFAULT
+// DATA DEFAULT SISTEM
 // ============================================================
 export const DEFAULT_PRODUCTS = [
     { id: 1, name: "Kelas / Jasa Bug Spammer", price: "Rp 5.000 / 14.000", image: "", demoUrl: "", isOpen: true, benefits: ["Diajarin trik bug tanpa panel", "Anti-banned sistem Cyber", "Target Spammer/Ripper Bebas", "Open Jasa Komersial Sendiri"] },
@@ -39,8 +39,7 @@ export const DEFAULT_TOOLS = [
 export const DEFAULT_BIOLINK_CONFIG = {
     bio: "Kalian nyari grub joki kontak terbuka?, sung join dibawah (Contoh doang bre) YANG MAU ORDER WEBSITENYA LANGSUNG",
     bgImage: "", whatsapp: "https://wa.me/6285789884293", tiktok: "#", instagram: "#", youtube: "#", email: "mailto:admin@zurra.store",
-    popupText: "Zurra Store Melayani:\n• Jaspost Free Ke PM\n• MC/Rekber \n\nList Fee MC/Rekber:\n1-10k: 1k\n10-50k: 5k\n50-100k: 10k\n100-500k: 25k\n500-1jt: 50k\n1jt-5jt: 100k\n5jt-10jt: 250k\n10jt-50jt: 500k\nBT/TT❌\n...dan seterusnya!!\nTRX BATAL FEE TETAP KEPOTONG!",
-    popupLink: ""
+    popupText: "Zurra Store Melayani:\n• Jaspost Free Ke PM\n• MC/Rekber \n\nList Fee MC/Rekber:\n🛇-🛅ᴋ: 🛇ᴋ\n🛆-🛈🛅ᴋ: 🛈ᴋ\n🛈🛆-🛄🛅ᴋ: 🛅ᴋ\n🛄🛆-🛀🛀ᴋ: 🛇ᴋ\n🛀🛀🛇-🛈🛅🛀ᴋ: 🛇🛀ᴋ\n🛈🛅🛇-🛉🛀ᴋ: 🛇🛅ᴋ\n🛉🛀🛇-🛄🛀ᴋ: 🛈🛀ᴋ\nʙᴛ/ᴛᴛ❌\n...ᴅᴀɴ sᴇᴛᴇʀᴜsɴʏᴀ!!\nᴛʀx ʙᴀᴛᴀʟ ғᴇᴇ ᴛᴇᴛᴇᴘ ᴋᴇᴘᴏᴛᴏɴɢ!", popupLink: ""
 };
 
 export const DEFAULT_BIOLINK_LINKS = [
@@ -49,9 +48,6 @@ export const DEFAULT_BIOLINK_LINKS = [
     { title: "CH TESTI ZURRA STORE", desc: "Kumpulan real testimony pembeli jasa", type: "telegram", url: "https://t.me/ALLSANS62", avatar: "https://nefu.life/0_ZoEH.jpg" }
 ];
 
-// ============================================================
-//  FUNGSI UTAMA
-// ============================================================
 let cachedData = null;
 
 export async function fetchAllData() {
@@ -60,7 +56,6 @@ export async function fetchAllData() {
         const snapshot = await get(child(ref(db), '/'));
         if (snapshot.exists()) {
             cachedData = snapshot.val();
-            console.log('✅ Data fetched successfully');
             if (!cachedData.products) cachedData.products = DEFAULT_PRODUCTS;
             if (!cachedData.partners) cachedData.partners = DEFAULT_PARTNERS;
             if (!cachedData.tools) cachedData.tools = DEFAULT_TOOLS;
@@ -68,7 +63,6 @@ export async function fetchAllData() {
             if (!cachedData.biolinkLinks) cachedData.biolinkLinks = DEFAULT_BIOLINK_LINKS;
             return cachedData;
         } else {
-            console.log('📭 Database kosong, menyimpan default...');
             cachedData = {
                 products: DEFAULT_PRODUCTS,
                 partners: DEFAULT_PARTNERS,
@@ -77,7 +71,6 @@ export async function fetchAllData() {
                 biolinkLinks: DEFAULT_BIOLINK_LINKS
             };
             await set(ref(db), cachedData);
-            console.log('✅ Default data saved to Firebase');
             return cachedData;
         }
     } catch (e) {
@@ -94,9 +87,7 @@ export async function fetchAllData() {
 
 async function saveAllData(data) {
     try {
-        console.log('💾 Saving data to Firebase...');
         await set(ref(db), data);
-        console.log('✅ Save successful');
         cachedData = data;
         return true;
     } catch (e) {
@@ -129,4 +120,76 @@ export async function saveBiolinkLinks(links) {
     let data = await fetchAllData();
     data.biolinkLinks = links;
     return await saveAllData(data);
+}
+
+// ============================================================
+// FUNGSI MANAJEMEN ANTREAN TRANSAKSI (ORDER LOG)
+// ============================================================
+export async function createOrderLog(orderData) {
+    try {
+        const ordersRef = ref(db, 'orders');
+        const newOrderRef = push(ordersRef);
+        const payload = {
+            orderId: orderData.orderId,
+            productName: orderData.productName,
+            price: orderData.price,
+            buyerPhone: orderData.buyerPhone,
+            status: "PENDING_PAYMENT",
+            createdAt: new Date().toISOString(),
+            formattedDate: new Date().toLocaleString('id-ID')
+        };
+        await set(newOrderRef, payload);
+        return payload;
+    } catch (e) {
+        console.error('❌ Gagal menyimpan pesanan:', e);
+        return null;
+    }
+}
+
+export async function findOrdersById(query) {
+    try {
+        const snapshot = await get(child(ref(db), 'orders'));
+        if (snapshot.exists()) {
+            const allOrders = snapshot.val();
+            const results = [];
+            const cleanQuery = query.trim().toLowerCase().replace(/[^0-9a-z]/g, '');
+
+            Object.keys(allOrders).forEach(key => {
+                const order = allOrders[key];
+                const cleanPhone = (order.buyerPhone || '').replace(/[^0-9]/g, '');
+                const cleanOrderId = (order.orderId || '').toLowerCase().replace(/[^0-9a-z]/g, '');
+
+                if (cleanPhone.includes(cleanQuery) || cleanOrderId.includes(cleanQuery)) {
+                    results.push({ firebaseKey: key, ...order });
+                }
+            });
+            return results;
+        }
+        return [];
+    } catch (e) {
+        console.error('❌ Gagal mencari pesanan:', e);
+        return [];
+    }
+}
+
+export const findOrdersByPhoneOrId = findOrdersById;
+
+export async function updateOrderStatus(firebaseKey, newStatus) {
+    try {
+        await set(ref(db, `orders/${firebaseKey}/status`), newStatus);
+        return true;
+    } catch (e) {
+        console.error('❌ Gagal update status:', e);
+        return false;
+    }
+}
+
+export async function deleteOrderLog(firebaseKey) {
+    try {
+        await remove(ref(db, `orders/${firebaseKey}`));
+        return true;
+    } catch (e) {
+        console.error('❌ Gagal menghapus pesanan:', e);
+        return false;
+    }
 }
