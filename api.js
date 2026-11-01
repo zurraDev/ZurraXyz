@@ -3,6 +3,7 @@
 // ============================================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get, child, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCvkTdNqm_oqC9HW3wO716stVJdUGJbJIo",
@@ -17,6 +18,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const storage = getStorage(app);
 
 // ============================================================
 // DATA DEFAULT SISTEM
@@ -120,6 +122,21 @@ export async function saveBiolinkLinks(links) {
     let data = await fetchAllData();
     data.biolinkLinks = links;
     return await saveAllData(data);
+}
+
+// ============================================================
+// FUNGSI UPLOAD VIDEO BACKGROUND KE FIREBASE STORAGE
+// ============================================================
+export async function uploadBgVideo(file) {
+    try {
+        const fileRef = storageRef(storage, `backgrounds/bg_video_${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(fileRef, file);
+        const downloadUrl = await getDownloadURL(snapshot.ref);
+        return downloadUrl;
+    } catch (e) {
+        console.error('❌ Gagal upload video:', e);
+        return null;
+    }
 }
 
 // ============================================================
